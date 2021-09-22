@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../instances/pg';
+// import { sequelize } from '../instances/mysql';
 
 export interface PhraseInstace extends Model{
     id: number;
@@ -20,6 +21,6 @@ export const Phrase = sequelize.define<PhraseInstace>('Phrase',{
         type: DataTypes.STRING
     }
 },{
-    tableName: 'phrases',
+    tableName: 'phrase',
     timestamps: false
 })
