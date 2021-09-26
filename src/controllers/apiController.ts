@@ -1,7 +1,8 @@
+import { unlink } from 'fs/promises'
 import { Request, Response } from 'express';
 import { Sequelize } from 'sequelize';
 import { Phrase } from '../models/Phrase'
-
+import sharp from 'sharp';
 
 export const ping = (req: Request, res: Response) =>{
     res.json({pong: true});
@@ -88,4 +89,29 @@ export const randomPhrase = async (req: Request, res: Response) => {
     } else {
         res.json({error: 'Não há menssagens'});
     }
+}
+
+export const uploadFile = async (req: Request, res: Response) => {
+
+    if(req.file){
+
+        const filename = `${req.file.filename}.jpg`
+
+        await sharp(req.file.path)
+        .resize(300, 300)
+        .toFormat('jpeg')
+        .toFile(`./public/media/${filename}`);
+
+        await unlink(req.file.path);
+
+        res.json({image: `${filename}`});
+
+    }else{
+        res.status(400);
+        res.json({error:'error'})
+    }
+
+
+
+    res.json({});
 }
